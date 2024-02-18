@@ -1,1 +1,1 @@
-kara,burak,hosgor,203,123
+karayip,burak,hosgor,1995,205
