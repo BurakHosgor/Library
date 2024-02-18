@@ -9,8 +9,9 @@ class Library:
         self.file.seek(0)
         for line in self.file.readlines():
             book_data = line.strip().split(",")
-            author = book_data[1] if book_data[2] == "" else f"{book_data[1]} {book_data[2]}"
+            author = book_data[1]
             print(f"Book: {book_data[0]}, Author: {author}")
+
 
     def add_book(self):
         title = input("Enter book title: ")
@@ -22,12 +23,7 @@ class Library:
             return
 
         # Split the author's name and surname
-        author_parts = author_name.strip().split(" ", 1)
-        if len(author_parts) == 1:  # Only name is given
-            author_first_name = author_parts[0]
-            author_last_name = ""
-        else:
-            author_first_name, author_last_name = author_parts
+        author_first_name, *author_last_name = author_name.strip().split(" ")
 
         release_date = input("Enter release date: ")
         pages = input("Enter number of pages: ")
@@ -35,12 +31,14 @@ class Library:
         # Check if the book already exists in the library
         self.file.seek(0)
         for line in self.file.readlines():
-            if f"{title},{author_first_name},{author_last_name}" in line:
+            if f"{title},{author_first_name}{' ' if author_last_name else ''}{' '.join(author_last_name)}" in line:
                 print("This book is already in the library.")
                 return
 
-        self.file.write(f"{title},{author_first_name},{author_last_name},{release_date},{pages}\n")
+        self.file.write(f"{title},{author_first_name}{' ' if author_last_name else ''}{' '.join(author_last_name)},{release_date},{pages}\n")
         print("Book added successfully.")
+
+      
 
     def remove_book(self):
         title = input("Enter the title of the book you want to remove: ")
